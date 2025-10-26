@@ -1,0 +1,13 @@
+{
+	"auths": {},
+	"psFormat": "table {{.Names}}\\t{{.Image}}\\t{{.Status}}\\t{{.Command}}",
+	"imagesFormat": "table {{.Repository}}\\t{{.Tag}}\\t{{.ID}}\\t{{.Size}}",
+	"credsStore": "desktop",
+	"proxies": {
+		"default": {
+			"httpProxy": "http://10.36.255.25:8080",
+			"httpsProxy": "http://10.36.255.25:8080"
+		}
+	},
+	"experimental": "enabled"
+}

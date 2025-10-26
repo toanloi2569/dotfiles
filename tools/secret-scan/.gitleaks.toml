@@ -1,0 +1,33 @@
+title = "Dotfiles Secret Scan"
+description = "Custom gitleaks rules tuned for dotfiles + symlink targets"
+
+# Pull in the full upstream gitleaks rule set so chúng ta không phải tự định nghĩa từng secret.
+extends = [
+  { type = "builtin", name = "gitleaks.toml" }
+]
+
+############################################################
+# Global allowlist                                         #
+############################################################
+[allowlist]
+description = "Generated files that often carry hashed blobs"
+paths = [
+  '''^configs/nvim/lazy-lock\.json$''',
+  '''^tools/secret-scan/lazy-lock\.json$''',
+]
+
+regexes = [
+  '''-----BEGIN PUBLIC KEY-----''',
+]
+
+############################################################
+# Extra custom rules (bổ sung cho bộ mặc định)             #
+############################################################
+
+[[rules]]
+id = "gitlab-oauth-client"
+description = "GitLab OAuth client credentials (client id / secret)"
+regex = '''gitLabDevClient(?:Id|Secret)\s*=\s*([0-9a-zA-Z\-]{32,})'''
+secretGroup = 1
+keywords = ["gitLabDevClientId", "gitLabDevClientSecret"]
+tags = ["gitlab", "oauth", "client"]

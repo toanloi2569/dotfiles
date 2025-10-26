@@ -1,0 +1,8 @@
+export GITHUB_HTTP_PROXY="http://10.36.255.25:8080"
+export GITHUB_HTTPS_PROXY="$GITHUB_HTTP_PROXY"
+
+github-proxy() {
+  HTTP_PROXY="$GITHUB_HTTP_PROXY" HTTPS_PROXY="$GITHUB_HTTPS_PROXY" \
+  http_proxy="$GITHUB_HTTP_PROXY" https_proxy="$GITHUB_HTTPS_PROXY" \
+  "$@"
+}

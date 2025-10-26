@@ -1,0 +1,17 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+        name: gitleaks-protect (staged only)
+        args: ["protect", "--staged", "--redact", "--config=tools/secret-scan/.gitleaks.toml"]
+        stages: [pre-commit]
+
+  - repo: local
+    hooks:
+      - id: gitleaks-pre-push-fullscan
+        name: gitleaks-detect-full-workspace (+ symlink targets)
+        entry: bash tools/secret-scan/prepush-gitleaks.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+show_help() {
+  cat <<'USAGE'
+Usage: logcolor [FILE...]
+
+Read logs from STDIN or files and colorize common levels (ERROR/WARN/INFO/DEBUG/TRACE).
+Examples:
+  tail -f /var/log/app.log | logcolor
+  logcolor app.log
+USAGE
+}
+
+if [[ $# -gt 0 ]]; then
+  case "$1" in
+    -h|--help)
+      show_help
+      exit 0
+      ;;
+  esac
+fi
+
+awk '
+function color(code, text) {
+  return sprintf("\033[%sm%s\033[0m", code, text)
+}
+{
+  line = $0
+  gsub(/TRACE/, color("90", "TRACE"), line)
+  gsub(/DEBUG/, color("36", "DEBUG"), line)
+  gsub(/INFO/, color("32", "INFO"), line)
+  gsub(/WARN/, color("33", "WARN"), line)
+  gsub(/ERROR/, color("31", "ERROR"), line)
+  gsub(/FATAL/, color("41;37", "FATAL"), line)
+  print line
+}
+' "$@"

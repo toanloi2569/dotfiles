@@ -1,0 +1,3 @@
+# Each line: plugin-name
+# Example:
+# neat
